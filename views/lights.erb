@@ -1,0 +1,17 @@
+<% lights.each do |light| %>
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-xs-4"><%= light.name %></div>
+        <div class="col-xs-6"><%= light.device_type %></div>
+        <div class="col-xs-2">
+          <div class="mode">
+              <% if (defined? light.on?) %>
+                  <input type="checkbox" name="onoffswitch" id="<%= light.name %>" <%= (light.on?) ? "checked" : "" %>>
+              <% end %>
+          </div>
+        </div>
+      </div>
+
+
+    </li>
+<% end %>
