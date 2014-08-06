@@ -17,6 +17,10 @@ class Mios < Sinatra::Base
   	mios = MiOS::Interface.new('http://10.0.1.3:3480')
     @devices = mios.device_names
   end
+
+  get '/' do
+    redirect to('/lights')
+  end
   
   get '/lights' do
     lights=[]
