@@ -1,16 +1,33 @@
-<% sounds = ['wheel', 'prayer'] %>
-<% sounds.each do |sound| %>
-    <li class="list-group-item">
-      <div class="row">
-        <div class="col-xs-6"><%= sound %></div>
-        <div class="col-xs-6">
-          <button type="button" class='soundActions' id="<%= sound %>">Play <%= sound %></button>
-          </div>
-      </div>
-
-
-    </li>
-<% end %>
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Sounds</div>
+    <div class="panel-body">
+      <!-- summary -->
+    </div>
+    
+    <ul class="list-group">
+        <% sounds = [
+            {
+                :id => 'wheel', 
+                :name => 'Wheel of Fortune'
+            },
+            {
+                :id => 'prayer',
+                :name => 'Meet the Parents Prayer'
+            }
+            ] %>
+        <% sounds.each do |sound| %>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-xs-6"><%= sound[:name] %></div>
+                <div class="col-xs-6">
+                  <button type="button" class='soundActions' id="<%= sound[:id] %>">Play <%= sound[:id] %></button>
+                  </div>
+              </div>
+            </li>
+        <% end %>
+    </ul>
+</div>
 <script type="text/javascript">
   $(document).ready(function() {
     $(".nav").removeClass('active');
