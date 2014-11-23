@@ -1,0 +1,13 @@
+<% sounds = ['wheel', 'prayer'] %>
+<% sounds.each do |sound| %>
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-xs-6"><%= sound %></div>
+        <div class="col-xs-6">
+          <button type="button" class='soundActions' id="<%= sound %>">Play <%= sound %></button>
+          </div>
+      </div>
+
+
+    </li>
+<% end %>

@@ -1,6 +1,9 @@
+#!/usr/bin/env ruby
 require 'stringio'
 require 'sinatra'
 require 'mios'
+require 'rest_client'
+require 'uri'
 
 class Mios < Sinatra::Base
   def self.silence_warnings
@@ -45,5 +48,19 @@ class Mios < Sinatra::Base
     else
         return "Supported actions are on or off."
     end
+  end
+
+  get '/sounds' do
+    erb :sounds
+  end
+
+  get '/sounds/favorite/:sound' do
+    sound = URI.escape(params[:sound])
+    RestClient.get "http://localhost:5005/kitchen/favorite/#{sound}"
+  end
+
+  get '/sounds/say/:sound' do
+    sound = URI.escape(params[:sound])
+    RestClient.get "http://localhost:5005/kitchen/say/#{sound}"
   end
 end
