@@ -30,8 +30,8 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/lights">Lights</a></li>
-        <li><a href="/sounds">Sounds</a></li>
+        <li id="nav-lights" class="nav active"><a href="/lights">Lights</a></li>
+        <li id="nav-sounds" class='nav'><a href="/sounds">Sounds</a></li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
@@ -75,6 +75,7 @@
           $.get('/lights/' + event.target.id + '/' + nextMode);
     });
     $("[name='onoffswitch']").bootstrapSwitch();
+    
     $('.soundActions').click(function(){
         $.get('/sounds/favorite/' + event.target.id);
     });
