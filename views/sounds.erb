@@ -6,31 +6,28 @@
     </div>
     
     <ul class="list-group">
-        <% sounds = [
-            {
-                :id => 'wheel', 
-                :name => 'Wheel of Fortune'
-            },
-            {
-                :id => 'prayer',
-                :name => 'Meet the Parents Prayer'
-            }
-            ] %>
-        <% sounds.each do |sound| %>
+        <% favorites.each do |favRaw| %>
+            <% fav = favRaw.gsub /"/, '' %>
             <li class="list-group-item">
               <div class="row">
-                <div class="col-xs-6"><%= sound[:name] %></div>
+                <div class="col-xs-6"><%= fav %></div>
                 <div class="col-xs-6">
-                  <button type="button" class='soundActions' id="<%= sound[:id] %>">Play <%= sound[:id] %></button>
+                  <button type="button" class='play-favorite' id="<%= fav %>">Play <%= fav %></button>
                   </div>
               </div>
             </li>
         <% end %>
     </ul>
+    
 </div>
 <script type="text/javascript">
   $(document).ready(function() {
     $(".nav").removeClass('active');
     $("#nav-sounds").addClass('active');
+    
+    $('.play-favorite').click(function(){
+        $.get('/sounds/favorite/' + event.target.id);
+    });
+    
   });
 </script>

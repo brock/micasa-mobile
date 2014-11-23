@@ -51,9 +51,10 @@ class Mios < Sinatra::Base
   end
 
   get '/sounds' do
-    erb :sounds
+    response = RestClient.get "http://localhost:5005/kitchen/favorites"
+    erb :sounds, :locals => {:favorites => response[1..-2].split(',') }
   end
-
+  
   get '/sounds/favorite/:sound' do
     sound = URI.escape(params[:sound])
     RestClient.get "http://localhost:5005/kitchen/favorite/#{sound}"

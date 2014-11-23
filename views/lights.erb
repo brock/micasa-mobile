@@ -29,5 +29,10 @@
   $(document).ready(function() {
     $(".nav").removeClass('active');
     $("#nav-lights").addClass('active');
+    $("[name='onoffswitch']").on('switchChange.bootstrapSwitch', function(event, state) {
+          var nextMode = (state) ? "on" : "off";
+          $.get('/lights/' + event.target.id + '/' + nextMode);
+    });
+    $("[name='onoffswitch']").bootstrapSwitch();
   });
 </script>

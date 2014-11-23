@@ -55,19 +55,4 @@
 </div>
 
 </body>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("[name='onoffswitch']").on('switchChange.bootstrapSwitch', function(event, state) {
-          var nextMode = (state) ? "on" : "off";
-          $.get('/lights/' + event.target.id + '/' + nextMode);
-    });
-    $("[name='onoffswitch']").bootstrapSwitch();
-    
-    $('.soundActions').click(function(){
-        $.get('/sounds/favorite/' + event.target.id);
-    });
-  });
-</script>
-
 </html>
