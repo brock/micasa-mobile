@@ -3,7 +3,10 @@
     <div class="panel-heading">Sounds</div>
     <div class="panel-body">
       <!-- summary -->
+      <input type='text' id='say' placeholder="type something you want to hear..." style="width: 50%"></input>
+      <button type="button" class='play-say'>Speak It!</button>
     </div>
+    
     
     <ul class="list-group">
         <% favorites.each do |favRaw| %>
@@ -27,6 +30,11 @@
     
     $('.play-favorite').click(function(){
         $.get('/sounds/favorite/' + event.target.id);
+    });
+    
+    $('.play-say').click(function(){
+        var say = $('#say').val();
+        $.get('/sounds/say/' + say);
     });
     
   });
