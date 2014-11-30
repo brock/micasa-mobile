@@ -4,6 +4,7 @@ require 'sinatra'
 require 'mios'
 require 'rest_client'
 require 'uri'
+require 'json'
 
 class Mios < Sinatra::Base
   def self.silence_warnings
@@ -50,18 +51,32 @@ class Mios < Sinatra::Base
     end
   end
 
-  get '/sounds' do
+  get '/music' do
+    current = RestClient.get "http://localhost:5005/kitchen/state"
     response = RestClient.get "http://localhost:5005/kitchen/favorites"
-    erb :sounds, :locals => {:favorites => response[1..-2].split(',') }
+    erb :music, :locals => {:favorites => response[1..-2].split(','), :current => JSON.parse(current) }
   end
   
-  get '/sounds/favorite/:sound' do
+  get '/music/favorite/:sound' do
     sound = URI.escape(params[:sound])
     RestClient.get "http://localhost:5005/kitchen/favorite/#{sound}"
   end
 
-  get '/sounds/say/:sound' do
+  get '/music/say/:sound' do
     sound = URI.escape(params[:sound])
     RestClient.get "http://localhost:5005/kitchen/say/#{sound}"
+  end
+  
+  get '/music/volume/:level' do
+    level = URI.escape(params[:level])
+    RestClient.get "http://localhost:5005/kitchen/volume/#{level}"
+  end
+  
+  get '/music/play' do
+    RestClient.get "http://localhost:5005/kitchen/play"
+  end
+  
+  get '/music/pause' do
+    RestClient.get "http://localhost:5005/kitchen/pause"
   end
 end
