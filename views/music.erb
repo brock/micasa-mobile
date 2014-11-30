@@ -1,0 +1,108 @@
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">Music</div>
+    <div class="panel-body">
+      <div class="current-track">
+        <div class="row">
+          <!-- left column -->
+          <div class="col-sm-4">  
+            <h4>Now Playing</h4>
+            <p>Artist: <%= current["currentTrack"]["artist"] %></p>
+            <p>Track: <%= current["currentTrack"]["title"] %></p>
+            <p>Album: <%= current["currentTrack"]["album"] %></p>
+          </div>
+          
+          <!-- middle column -->
+          <div class="col-sm-4">
+            <% playing = "Play" %>
+            <% if current["zoneState"] == "PLAYING" %>
+              <% play = "Playing" %>
+              <% pause = "Pause" %>
+            <% else %>
+              <% play = "Play" %>
+              <% pause = "Stopped" %>
+            <% end %>
+            <button type="button" data-action="play" class="resume btn btn-default <%= play == 'Playing' ? 'active' : '' %>">Play</button>
+            <button type="button" data-action="pause" class="resume btn btn-default <%= play == 'Playing' ? '' : 'active' %>">Pause</button>
+            <br />
+            <h4>Volume: <span id="current-volume"><%= current['volume'] %></span></h4>
+            <div class="row" style="display: inline">
+              <button class="volume" data-level="0">Mute</button>
+              <button class="volume" data-level="5">5%</button>
+              <button class="volume" data-level="10">10%</button>
+              <button class="volume" data-level="20">20%</button>
+              <button class="volume" data-level="30">30%</button>
+            </div>  
+            
+          </div>
+          
+          <!-- right column -->
+          <div class="col-sm-4">
+            <img class="img-rounded" src='<%= current["currentTrack"]["albumArtURI"] %>' style="width: 200px" />
+          </div>
+          
+        </div>
+        
+        <hr />
+      
+      </div>
+    
+      <h4>Playlists</h4>
+      <ul class="list-group">
+          <% favorites.each do |favRaw| %>
+              <% fav = favRaw.gsub /"/, '' %>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-xs-6"><%= fav %></div>
+                  <div class="col-xs-6">
+                    <button type="button" class='play-favorite' id="<%= fav %>">Play <%= fav %></button>
+                    </div>
+                </div>
+              </li>
+          <% end %>
+      </ul>
+      
+      <h4>Say Something!</h4>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col-xs-6">
+              <input type='text' id='say' placeholder="type something you want to hear..." style="width: 80%"></input>
+            </div>
+            <div class="col-xs-6">
+              <button type="button" class='play-say'>Speak It!</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+        
+    </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".nav").removeClass('active');
+    $("#nav-music").addClass('active');
+    
+    $('.play-favorite').click(function(){
+        $.get('/music/favorite/' + event.target.id);
+    });
+    
+    $('.play-say').click(function(){
+        var say = $('#say').val();
+        $.get('/music/say/' + say);
+    });
+    
+    $('.volume').click(function() {
+      var level = $(event.target).data('level');
+      $.get('/music/volume/' + level);
+      $('#current-volume').text(level);
+    });
+    
+    $('button.resume').click(function() {
+      $('button.resume').toggleClass('active');
+      var action = $(event.target).data('action');
+      $.get('/music/' + action);
+    });
+    
+  });
+</script>
