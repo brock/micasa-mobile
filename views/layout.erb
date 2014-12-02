@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>MiCasa Mobile</title>
+  <title>Home</title>
 
   <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" rel="stylesheet" />
@@ -24,14 +24,14 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Home</a>
+      <a class="navbar-brand" href="/">Home</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/lights">Lights</a></li>
-        <li><a href="#">Link</a></li>
+        <li id="nav-lights" class="nav active"><a href="/lights">Lights</a></li>
+        <li id="nav-music" class='nav'><a href="/music">Music</a></li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
@@ -51,31 +51,8 @@
 </nav>
 
 <div class="container">
-  <div class="panel panel-default">
-    <!-- Default panel contents -->
-    <div class="panel-heading">Devices</div>
-    <div class="panel-body">
-      <!-- summary -->
-    </div>
-
-    <!-- List group -->
-    <ul class="list-group">
-      <%= yield %>
-    </ul>
-  </div>
-
+        <%= yield %>
 </div>
 
 </body>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    $("[name='onoffswitch']").on('switchChange.bootstrapSwitch', function(event, state) {
-          var nextMode = (state) ? "on" : "off";
-          $.get('/lights/' + event.target.id + '/' + nextMode);
-    });
-    $("[name='onoffswitch']").bootstrapSwitch();
-  });
-</script>
-
 </html>
