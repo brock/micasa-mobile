@@ -28,7 +28,12 @@ class Mios < Sinatra::Base
   
   get '/lights' do
     lights=[]
+    # I'm downcasing all of my device names here
     devices = mios.devices.sort { |a,b| a.name.downcase <=> b.name.downcase }
+    
+    # this next line can be commented out if you want to see more than just lights
+    devices = devices.select { |d| defined? d.kWh and defined? d.on? }
+    
     erb :lights, :locals => { :lights => devices }
   end
   
