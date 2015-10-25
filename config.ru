@@ -1,5 +1,5 @@
 require "sinatra"
 
-require './index.rb'
+require File.expand_path '../index.rb', __FILE__
 
 run Mios

@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <!-- Default panel contents -->
-    <div class="panel-heading">Devices</div>
+    <div class="panel-heading">Lights</div>
     <div class="panel-body">
       <!-- summary -->
     </div>
@@ -13,26 +13,97 @@
             <div class="col-xs-6 col-md-4"><%= light.name %></div>
             <div class="hidden-xs hidden-sm col-md-4"><%= light.device_type %></div>
             <div class="col-xs-6 col-md-4">
-              <% if (defined? light.on?) %>
+              <% if (defined? light.level) %>
                 <div class="mode">
-                        <input type="checkbox" name="onoffswitch" id="<%= light.name %>" <%= (light.on?) ? "checked" : "" %>>
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <input type="checkbox" name="light" id="<%= light.name %>" <%= (light.on?) ? "checked" : "" %>>
+                    </div>
+                      <div class="col-xs-8">
+                        <input type="range" name="dimmer" id="<%= light.name %>"
+                        min="0" max="100" value="<%= light.level %>"
+                        onchange="dimLights(this.id, this.value)">
+                      </div>
+                  </div>
+                </div>
+              <% elsif (defined? light.on?) %>
+                <div class="mode">
+                        <input type="checkbox" name="light" id="<%= light.name %>" <%= (light.on?) ? "checked" : "" %>>
                 </div>
               <% end %>
             </div>
           </div>
-        </li>      
+        </li>
       <% end %>
     </ul>
 </div>
-  
+
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+    <div class="panel-heading">Sensors</div>
+    <div class="panel-body">
+      <!-- summary -->
+    </div>
+
+
+    <!-- List group -->
+    <ul class="list-group">
+      <% sensors.each do |switch| %>
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col-xs-6 col-md-4"><%= switch.name %></div>
+            <div class="hidden-xs hidden-sm col-md-4"><%= switch.device_type %></div>
+            <div class="col-xs-6 col-md-4">
+              <% if (defined? switch.armed?) %>
+                <div class="mode">
+                        <input type="checkbox" name="sensor" id="<%= switch.name %>" <%= (switch.armed?) ? "checked" : "" %>>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+</div>
+
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+    <div class="panel-heading">All Devices</div>
+    <div class="panel-body">
+      <!-- summary -->
+    </div>
+
+
+    <!-- List group -->
+    <ul class="list-group">
+      <% devices.each do |device| %>
+        <li class="list-group-item">
+          <div class="row">
+            <div class="col-xs-6 col-md-6"><%= device.name %></div>
+            <div class="hidden-xs hidden-sm col-md-6"><%= device.device_type %></div>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+</div>
+
 <script type="text/javascript">
   $(document).ready(function() {
     $(".nav").removeClass('active');
     $("#nav-lights").addClass('active');
-    $("[name='onoffswitch']").on('switchChange.bootstrapSwitch', function(event, state) {
+
+    // enable switching lights on and off
+    $("[name='light']").on('switchChange.bootstrapSwitch', function(event, state) {
           var nextMode = (state) ? "on" : "off";
           $.get('/lights/' + event.target.id + '/' + nextMode);
     });
-    $("[name='onoffswitch']").bootstrapSwitch();
+    $("[name='light']").bootstrapSwitch();
+
+    // enable arming and disarming sensors
+    $("[name='sensor']").on('switchChange.bootstrapSwitch', function(event, state) {
+      var nextMode = (state) ? "arm" : "disarm";
+      $.get('/sensors/' + event.target.id + '/' + nextMode);
+    });
+    $("[name='sensor']").bootstrapSwitch();
   });
 </script>
